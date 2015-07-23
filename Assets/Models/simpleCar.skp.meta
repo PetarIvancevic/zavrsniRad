@@ -1,0 +1,153 @@
+fileFormatVersion: 2
+guid: e984cbdb450bf264497c84bce4857a68
+timeCreated: 1437169429
+licenseType: Free
+SketchUpImporter:
+  generateBackFace: 0
+  mergeCoplanarFaces: 0
+  selectedNodes: 00000000010000000200000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
+  assetHash:
+    serializedVersion: 2
+    Hash: f6b30cd8ebd6fa5f909a8dca2beca0d6
+  longitude: -105.24213899999999
+  latitude: 40.018309000000002
+  northCorrection: -0
+  fileUnit: 0
+  sketchUpImportData:
+    defaultCamera:
+      position: {x: -12.8342075, y: 4.08566761, z: 9.45665455}
+      lookAt: {x: -11.1679373, y: 3.84917855, z: 8.71712685}
+      up: {x: .11758592, y: .991690516, z: -.0521872491}
+      fov: 35
+      aspectRatio: 0
+      orthoSize: 1
+      isPerspective: 1
+    scenes:
+    - camera:
+        position: {x: -10.3865051, y: 5.34004164, z: 1.60744429}
+        lookAt: {x: 5.90336561, y: 1.0236156, z: 2.1586206}
+        up: {x: .255853355, y: .966676891, z: .00865692925}
+        fov: 35
+        aspectRatio: 0
+        orthoSize: 1
+        isPerspective: 1
+      name: Normal
+    - camera:
+        position: {x: -10.6314583, y: 5.01591682, z: 1.88985753}
+        lookAt: {x: 6.0130744, y: 2.32244968, z: 1.89167309}
+        up: {x: .159744844, y: .987158358, z: 1.74239231e-05}
+        fov: 35
+        aspectRatio: 0
+        orthoSize: 1
+        isPerspective: 1
+      name: ReverseLights
+    - camera:
+        position: {x: -10.278039, y: 5.46798849, z: 2.07607675}
+        lookAt: {x: 6.06374407, y: 1.3231895, z: 1.82710671}
+        up: {x: .245792314, y: .96931529, z: -.00374469231}
+        fov: 35
+        aspectRatio: 0
+        orthoSize: 1
+        isPerspective: 1
+      name: StopLights
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: CarBody
+    100002: Exaust
+    100004: Group 1
+    100006: LeftBackTire
+    100008: LeftFrontTire
+    100010: RightBackTire
+    100012: RightFrontTire
+    100014: //RootNode
+    400000: CarBody
+    400002: Exaust
+    400004: Group 1
+    400006: LeftBackTire
+    400008: LeftFrontTire
+    400010: RightBackTire
+    400012: RightFrontTire
+    400014: //RootNode
+    2300000: CarBody
+    2300002: Exaust
+    2300004: Group 1
+    2300006: LeftBackTire
+    2300008: LeftFrontTire
+    2300010: RightBackTire
+    2300012: RightFrontTire
+    3300000: CarBody
+    3300002: Exaust
+    3300004: Group 1
+    3300006: LeftBackTire
+    3300008: LeftFrontTire
+    3300010: RightBackTire
+    3300012: RightFrontTire
+    4300000: Mesh Group 1
+    4300002: Mesh RightBackTire
+    4300004: Mesh LeftBackTire
+    4300006: Mesh RightFrontTire
+    4300008: Mesh LeftFrontTire
+    4300010: Mesh CarBody
+    4300012: Mesh Exaust
+  materials:
+    importMaterials: 1
+    materialName: 2
+    materialSearch: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .0253999997
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
