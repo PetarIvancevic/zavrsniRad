@@ -13,8 +13,10 @@ public class CarMovement : MonoBehaviour {
 	 * */
 	private Quaternion wheelRotationToBody;
 	private Rigidbody carBody;
-	private float speedModifier = 1.0f;
-	
+	private bool[] markersPassed;
+	private int lapsPassed = 0;
+	private int gear = 1;
+
 	//svi kotaci u string zapisu
 	private string[] tireNames = new string[4] {
 		"simpleCar/SteerLeftTire/LeftFrontTirePivot/LeftFrontTire",
@@ -54,6 +56,7 @@ public class CarMovement : MonoBehaviour {
 		this.tirePivots = new GameObject[4];
 		this.wheelColliders = new WheelCollider[4];
 		this.steerWheels = new GameObject[2];
+		this.markersPassed = new bool[7];
 
 		this.steerWheels [0] = GameObject.Find ("simpleCar/SteerLeftTire");
 		this.steerWheels [1] = GameObject.Find ("simpleCar/SteerRightTire");
@@ -62,20 +65,24 @@ public class CarMovement : MonoBehaviour {
 			this.tires[i] = GameObject.Find(this.tireNames[i]);
 			this.tirePivots[i] = GameObject.Find(this.tirePivotNames[i]);
 			this.wheelColliders[i] = GameObject.Find(this.wheelColiderNames[i]).GetComponent<WheelCollider>();
+			this.markersPassed[i] = false;
+			this.markersPassed[i+3] = false;
 		}
+		this.markersPassed [0] = true;
 
 		//spustimo centar mase
 		this.carBody = GameObject.Find ("PlayerHolder").GetComponent<Rigidbody> ();
 	}
 
-
+	//pomicemo cijelo auto preko wheel Collidera
 	private void MoveCar() {
-		for(int i = 2; i < 4; i++) {
-			this.wheelColliders[i].motorTorque = thrustTorque;
-		}
+		for(int i = 2; i < 4; i++) 
+			this.wheelColliders[i].motorTorque = this.thrustTorque;
+		
 
 	}
 
+	//samo okrecemo kotace ako se krece autic
 	private void RotateTheTires(float move) {
 		move = move * 25f;
 		for (int i = 0; i < 4; i++) 
@@ -91,7 +98,6 @@ public class CarMovement : MonoBehaviour {
 	//imitacija "centripetalne" sile 
 	private void centripetalForce(float steer) {
 		WheelHit hit;
-
 		bool groundedL = this.wheelColliders [0].GetGroundHit (out hit);
 		bool groundedR = this.wheelColliders [1].GetGroundHit (out hit);
 
@@ -105,12 +111,11 @@ public class CarMovement : MonoBehaviour {
 			this.carBody.AddForceAtPosition (this.wheelColliders [1].transform.up * -this.AntiRoll, this.wheelColliders [1].transform.position);
 	}
 
+
 	//skretanje
 	private void SteerCar(float steer) {
 		steer = 45f * steer;
 		for (int i = 0; i < 2; i++) {
-			Quaternion quat;
-			Vector3 pos;
 			this.wheelColliders[i].steerAngle = steer;
 			this.steerWheels[i].transform.localRotation = Quaternion.Euler(0f, 90f + this.wheelColliders[i].steerAngle, 0f);
 		}
@@ -118,10 +123,41 @@ public class CarMovement : MonoBehaviour {
 		this.centripetalForce (steer);
 	}
 
+	//korisnik je napravio krug i resetiramo sve markere
+	private void resetMarkers() {
+		for (int i = 1; i < 7; i++) {
+			this.markersPassed[i] = false;
+		}
+
+		this.lapsPassed++;
+		Debug.Log (this.lapsPassed);
+	}
+
+	//provjeri da li je korisnik napravio cijeli krug
+	private bool checkIfLap() {
+		for (int i = 0; i < 7; i++) {
+			if(this.markersPassed[i] == false)
+				return false;
+		}
+		this.resetMarkers ();
+		return true;
+	}
+
+	//oznaci pravi marker i provjeri ako je krug
+	private void checkTheRightMarker(string marker) {
+		int i = int.Parse(marker.Substring (6)) - 1;
+		if (i == 0) {
+			this.checkIfLap ();
+			Debug.Log (this.lapsPassed);
+		} else {
+			this.markersPassed[i] = true;
+		}
+	}
+
 	//dodat cemo za skupljanje kutija
 	void OnTriggerEnter(Collider col) {
-		if (col.gameObject.layer == LayerMask.NameToLayer ("RoadRightWayMarker"))
-			Debug.Log ("Your going the right way!");
+		if (col.gameObject.layer == LayerMask.NameToLayer ("RoadMarkers"))
+			this.checkTheRightMarker (col.ToString ().Split (' ') [0]);
 	}
 
 	//ova se metoda poziva svaki frame
@@ -133,7 +169,7 @@ public class CarMovement : MonoBehaviour {
 
 		SteerCar (Input.GetAxis ("Horizontal"));	
 
-		this.thrustTorque = move * this.speed;
+		this.thrustTorque = move * this.speed * 1.66f;
 		MoveCar ();
 		this.RotateTheTires (-move);	
 	}
