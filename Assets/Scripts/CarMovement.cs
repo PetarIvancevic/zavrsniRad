@@ -13,7 +13,8 @@ public class CarMovement : MonoBehaviour {
 	 * */
 	private Quaternion wheelRotationToBody;
 	private Rigidbody carBody;
-
+	private float speedModifier = 1.0f;
+	
 	//svi kotaci u string zapisu
 	private string[] tireNames = new string[4] {
 		"simpleCar/SteerLeftTire/LeftFrontTirePivot/LeftFrontTire",
@@ -96,22 +97,12 @@ public class CarMovement : MonoBehaviour {
 
 		if ((!groundedL && !groundedR) || (groundedL && groundedR))
 			return;
-		
-			
 
-		if (!groundedL) {
+		if (!groundedL)
 			this.carBody.AddForceAtPosition (this.wheelColliders [0].transform.up * -this.AntiRoll, this.wheelColliders [0].transform.position);
-			Debug.Log("Left centripetal");
-		}
 			
-			
-
-		if (!groundedR) {
+		if (!groundedR)
 			this.carBody.AddForceAtPosition (this.wheelColliders [1].transform.up * -this.AntiRoll, this.wheelColliders [1].transform.position);
-			Debug.Log("Right centripetal");
-		}
-			
-			
 	}
 
 	//skretanje
@@ -127,6 +118,11 @@ public class CarMovement : MonoBehaviour {
 		this.centripetalForce (steer);
 	}
 
+	//dodat cemo za skupljanje kutija
+	void OnTriggerEnter(Collider col) {
+		if (col.gameObject.layer == LayerMask.NameToLayer ("RoadRightWayMarker"))
+			Debug.Log ("Your going the right way!");
+	}
 
 	//ova se metoda poziva svaki frame
 	public void FixedUpdate() {
@@ -136,7 +132,7 @@ public class CarMovement : MonoBehaviour {
 			ApplyBrake ();
 
 		SteerCar (Input.GetAxis ("Horizontal"));	
-		
+
 		this.thrustTorque = move * this.speed;
 		MoveCar ();
 		this.RotateTheTires (-move);	
