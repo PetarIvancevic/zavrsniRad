@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 
@@ -16,6 +17,12 @@ public class CarMovement : MonoBehaviour {
 	private bool[] markersPassed;
 	private int lapsPassed = 0;
 	private int gear = 1;
+	private Vector3 lastPos; 
+
+
+	//posebne skripte za tekst
+	public Text victoryText;
+	public Text lapText;
 
 	//svi kotaci u string zapisu
 	private string[] tireNames = new string[4] {
@@ -52,12 +59,12 @@ public class CarMovement : MonoBehaviour {
 	//ova se metoda pokrece na pocetku 
 	//NIJE KONSTRUKTOR i ne smiju se koristiti
 	public void Start() {
+		this.victoryText.text = "";
 		this.tires = new GameObject[4];
 		this.tirePivots = new GameObject[4];
 		this.wheelColliders = new WheelCollider[4];
 		this.steerWheels = new GameObject[2];
 		this.markersPassed = new bool[7];
-
 		this.steerWheels [0] = GameObject.Find ("simpleCar/SteerLeftTire");
 		this.steerWheels [1] = GameObject.Find ("simpleCar/SteerRightTire");
 
@@ -72,21 +79,29 @@ public class CarMovement : MonoBehaviour {
 
 		//spustimo centar mase
 		this.carBody = GameObject.Find ("PlayerHolder").GetComponent<Rigidbody> ();
+		this.lastPos = this.carBody.transform.position;
 	}
 
 	//pomicemo cijelo auto preko wheel Collidera
-	private void MoveCar() {
-		for(int i = 2; i < 4; i++) 
-			this.wheelColliders[i].motorTorque = this.thrustTorque;
-		
-
+	private void MoveCar(float steer) {
+		for (int i = 2; i < 4; i++) {
+			if(steer != 0f)
+				this.wheelColliders[i].motorTorque = this.thrustTorque * 0.7f;
+			else
+				this.wheelColliders[i].motorTorque = this.thrustTorque;
+		}
+			
 	}
 
 	//samo okrecemo kotace ako se krece autic
-	private void RotateTheTires(float move) {
-		move = move * 25f;
-		for (int i = 0; i < 4; i++) 
-			this.tirePivots[i].transform.Rotate(Vector3.forward, this.speed * move * Time.deltaTime);			
+	private void RotateTheTires(float movement) {
+		movement = (movement == 0f) ? -1f : movement;
+		if (this.carBody.transform.position != this.lastPos) {
+			movement = Mathf.Sqrt(Mathf.Pow(this.carBody.transform.position.x - this.lastPos.x, 2) + Mathf.Pow (this.carBody.transform.position.z - this.lastPos.z, 2)) * 30000f * movement;
+			for (int i = 0; i < 4; i++) 
+				this.tirePivots [i].transform.Rotate (Vector3.forward, movement * Time.deltaTime);			
+			this.lastPos = this.transform.position;
+		}
 	}
 
 	//kocnica
@@ -111,10 +126,29 @@ public class CarMovement : MonoBehaviour {
 			this.carBody.AddForceAtPosition (this.wheelColliders [1].transform.up * -this.AntiRoll, this.wheelColliders [1].transform.position);
 	}
 
+	//napravi kada se upre esc da se otvori menu i stavi pauza
+	private void gamePaused() {
+
+	}
+
+	//napravi UI za novu igru
+	private void displayNewGameScreen() {
+
+	}
+
+	//promijenimo tekst na UI
+	private void updateTexts() {
+		this.lapText.text = "Lap " + this.lapsPassed + "/2";
+		if (this.lapsPassed == 2) {
+			this.victoryText.text = "You have won!";
+			this.gameObject.SetActive = false;
+		}
+			
+	}
 
 	//skretanje
 	private void SteerCar(float steer) {
-		steer = 45f * steer;
+		steer = steer * 45f;
 		for (int i = 0; i < 2; i++) {
 			this.wheelColliders[i].steerAngle = steer;
 			this.steerWheels[i].transform.localRotation = Quaternion.Euler(0f, 90f + this.wheelColliders[i].steerAngle, 0f);
@@ -130,7 +164,7 @@ public class CarMovement : MonoBehaviour {
 		}
 
 		this.lapsPassed++;
-		Debug.Log (this.lapsPassed);
+		this.updateTexts ();
 	}
 
 	//provjeri da li je korisnik napravio cijeli krug
@@ -145,12 +179,16 @@ public class CarMovement : MonoBehaviour {
 
 	//oznaci pravi marker i provjeri ako je krug
 	private void checkTheRightMarker(string marker) {
-		int i = int.Parse(marker.Substring (6)) - 1;
-		if (i == 0) {
+		int ind = int.Parse(marker.Substring (6)) - 1;
+		if (ind == 0) {
 			this.checkIfLap ();
-			Debug.Log (this.lapsPassed);
 		} else {
-			this.markersPassed[i] = true;
+			//provjerimo da ne bi slucajno isao u suprotnom smjeru
+			for(int i = 0; i < ind; i++)
+				if(this.markersPassed[i] == false)
+					return;
+
+			this.markersPassed[ind] = true;
 		}
 	}
 
@@ -163,17 +201,16 @@ public class CarMovement : MonoBehaviour {
 	//ova se metoda poziva svaki frame
 	public void FixedUpdate() {
 		float move = Input.GetAxis ("Vertical");
+		float steer = Input.GetAxis ("Horizontal");
 
 		if (Input.GetKey(KeyCode.Space))
 			ApplyBrake ();
 
-		SteerCar (Input.GetAxis ("Horizontal"));	
+		SteerCar (steer);	
 
 		this.thrustTorque = move * this.speed * 1.66f;
-		MoveCar ();
+		MoveCar (steer);
 		this.RotateTheTires (-move);	
 	}
-
-
 }
 
