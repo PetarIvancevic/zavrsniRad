@@ -141,7 +141,7 @@ public class CarMovement : MonoBehaviour {
 		this.lapText.text = "Lap " + this.lapsPassed + "/2";
 		if (this.lapsPassed == 2) {
 			this.victoryText.text = "You have won!";
-			this.gameObject.SetActive = false;
+			this.gameObject.SetActive(false);
 		}
 			
 	}

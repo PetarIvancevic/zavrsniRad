@@ -1,6 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
+Project("{7057B936-0C60-66A9-A511-CCFC491570FE}") = "zavrsniRad", "Assembly-CSharp-firstpass-vs.csproj", "{04944C71-01CD-9A3E-BE69-A9FCAD9D8F1F}"
+EndProject
 Project("{7057B936-0C60-66A9-A511-CCFC491570FE}") = "zavrsniRad", "Assembly-CSharp-vs.csproj", "{344DD434-A3EE-BB69-ED62-3F49D1F7B85F}"
 EndProject
 Project("{7057B936-0C60-66A9-A511-CCFC491570FE}") = "zavrsniRad", "Assembly-CSharp-Editor-vs.csproj", "{D7F61781-1525-DB06-E590-7C04D6D7752A}"
@@ -11,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04944C71-01CD-9A3E-BE69-A9FCAD9D8F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04944C71-01CD-9A3E-BE69-A9FCAD9D8F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04944C71-01CD-9A3E-BE69-A9FCAD9D8F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04944C71-01CD-9A3E-BE69-A9FCAD9D8F1F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{344DD434-A3EE-BB69-ED62-3F49D1F7B85F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{344DD434-A3EE-BB69-ED62-3F49D1F7B85F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{344DD434-A3EE-BB69-ED62-3F49D1F7B85F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -23,7 +29,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-										GlobalSection(MonoDevelopProperties) = preSolution
+																			GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

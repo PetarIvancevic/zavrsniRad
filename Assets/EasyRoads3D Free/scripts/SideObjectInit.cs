@@ -1,9 +1,11 @@
 using UnityEngine;
-using UnityEditor;
+
 using System.Collections;
 using System.Collections.Generic;
 using EasyRoads3D;
 public class OQOCCODODC{
+	#if UNITY_EDITOR
+
 	/*
 static public void ODCCCDQQDC(RoadObjectScript target){
 
@@ -171,4 +173,5 @@ scr.m_tangents = so.tangents;
 }
 }
 	 */
+#endif
 }
