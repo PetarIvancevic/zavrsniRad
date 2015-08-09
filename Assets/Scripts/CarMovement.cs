@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 
 public class CarMovement : MonoBehaviour {
-
 	private float thrustTorque;
 	//podatkovni clanovi klase za kretanje autica
 	public float speed = 150.0f;
@@ -15,14 +14,15 @@ public class CarMovement : MonoBehaviour {
 	private Quaternion wheelRotationToBody;
 	private Rigidbody carBody;
 	private bool[] markersPassed;
-	private int lapsPassed = 0;
+	private int lapsPassed = 1;
 	private int gear = 1;
 	private Vector3 lastPos; 
 
-
+	private int points;
 	//posebne skripte za tekst
 	public Text victoryText;
 	public Text lapText;
+	private Text pointsText;
 
 	//svi kotaci u string zapisu
 	private string[] tireNames = new string[4] {
@@ -54,11 +54,17 @@ public class CarMovement : MonoBehaviour {
 	//niz kotaca i pivota
 	private GameObject[] tires;
 	private GameObject[] tirePivots;
-
+	private GameObject[] collectableBoxes;
+	private int numBoxes;
+	private AudioSource collectSound;
 
 	//ova se metoda pokrece na pocetku 
 	//NIJE KONSTRUKTOR i ne smiju se koristiti
 	public void Start() {
+		this.numBoxes = GameObject.FindGameObjectsWithTag ("CollectableBox").Length;
+		this.collectableBoxes = new GameObject[this.numBoxes];
+		this.collectableBoxes = GameObject.FindGameObjectsWithTag ("CollectableBox");
+		this.points = 0;
 		this.victoryText.text = "";
 		this.tires = new GameObject[4];
 		this.tirePivots = new GameObject[4];
@@ -80,6 +86,8 @@ public class CarMovement : MonoBehaviour {
 		//spustimo centar mase
 		this.carBody = GameObject.Find ("PlayerHolder").GetComponent<Rigidbody> ();
 		this.lastPos = this.carBody.transform.position;
+		this.pointsText = GameObject.Find ("PointsText").GetComponent<Text>();
+		this.collectSound = this.GetComponent<AudioSource> ();
 	}
 
 	//pomicemo cijelo auto preko wheel Collidera
@@ -116,8 +124,7 @@ public class CarMovement : MonoBehaviour {
 		bool groundedL = this.wheelColliders [0].GetGroundHit (out hit);
 		bool groundedR = this.wheelColliders [1].GetGroundHit (out hit);
 
-		if ((!groundedL && !groundedR) || (groundedL && groundedR))
-			return;
+		if ((!groundedL && !groundedR) || (groundedL && groundedR)) return;
 
 		if (!groundedL)
 			this.carBody.AddForceAtPosition (this.wheelColliders [0].transform.up * -this.AntiRoll, this.wheelColliders [0].transform.position);
@@ -125,24 +132,15 @@ public class CarMovement : MonoBehaviour {
 		if (!groundedR)
 			this.carBody.AddForceAtPosition (this.wheelColliders [1].transform.up * -this.AntiRoll, this.wheelColliders [1].transform.position);
 	}
-
-	//napravi kada se upre esc da se otvori menu i stavi pauza
-	private void gamePaused() {
-
-	}
-
-	//napravi UI za novu igru
-	private void displayNewGameScreen() {
-
-	}
-
+	
 	//promijenimo tekst na UI
 	private void updateTexts() {
-		this.lapText.text = "Lap " + this.lapsPassed + "/2";
-		if (this.lapsPassed == 2) {
+		this.lapText.text = "Lap " + this.lapsPassed + "/3";
+		if (this.lapsPassed == 3) {
 			this.victoryText.text = "You have won!";
-			this.gameObject.SetActive(false);
-		}
+			this.gameObject.SetActive (false);
+		} else
+			this.activateTheBoxes ();
 			
 	}
 
@@ -191,11 +189,28 @@ public class CarMovement : MonoBehaviour {
 			this.markersPassed[ind] = true;
 		}
 	}
+		
+	private void activateTheBoxes() {
+		for (int i = 0; i < this.numBoxes; i++)
+			this.collectableBoxes [i].SetActive (true);
+	}
+
+	//ugasi element koji se skupio
+	private void collectBox(GameObject go) {
+		go.SetActive (false);
+
+		this.points += 10;
+		this.collectSound.Play ();
+		this.pointsText.text = "Points: " + this.points;
+	}
 
 	//dodat cemo za skupljanje kutija
 	void OnTriggerEnter(Collider col) {
 		if (col.gameObject.layer == LayerMask.NameToLayer ("RoadMarkers"))
 			this.checkTheRightMarker (col.ToString ().Split (' ') [0]);
+
+		if (col.tag == "CollectableBox")
+			this.collectBox (col.gameObject);
 	}
 
 	//ova se metoda poziva svaki frame
