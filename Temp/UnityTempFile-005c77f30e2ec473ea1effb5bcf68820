@@ -13,6 +13,7 @@
 -define:UNITY_5_1_2
 -define:UNITY_5_1
 -define:UNITY_5
+-define:UNITY_64
 -define:ENABLE_NEW_BUGREPORTER
 -define:ENABLE_2D_PHYSICS
 -define:ENABLE_4_6_FEATURES
@@ -52,9 +53,10 @@
 -define:PLATFORM_SUPPORTS_MONO
 -define:RENDER_SOFTWARE_CURSOR
 -define:ENABLE_LOCALIZATION
--define:UNITY_STANDALONE_WIN
+-define:UNITY_STANDALONE_OSX
 -define:UNITY_STANDALONE
 -define:ENABLE_SUBSTANCE
+-define:ENABLE_GAMECENTER
 -define:ENABLE_TEXTUREID_MAP
 -define:ENABLE_RUNTIME_GI
 -define:ENABLE_MOVIES
@@ -78,7 +80,7 @@
 'Assets/EasyRoads3D Free/scripts/sideObjectScript.cs'
 'Assets/Scripts/CarMovement.cs'
 'Assets/Scripts/MenuController.cs'
-'Assets/Scripts/RandomizeBirds.cs'
+'Assets/Scripts/RotateBoxes.cs'
 'Assets/Scripts/SoundEffects.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Xml.Linq.dll'

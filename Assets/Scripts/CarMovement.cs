@@ -11,18 +11,16 @@ public class CarMovement : MonoBehaviour {
 	/*	Kola i tijelo auta moraju biti sinkronizirana
 	 *  inace će se kola vrtiti krivo
 	 * */
-	private Quaternion wheelRotationToBody;
 	private Rigidbody carBody;
 	private bool[] markersPassed;
 	private int lapsPassed = 1;
-	private int gear = 1;
 	private Vector3 lastPos; 
 
 	private int points;
 	//posebne skripte za tekst
 	public Text victoryText;
 	public Text lapText;
-	private Text pointsText;
+	public Text pointsText;
 
 	//svi kotaci u string zapisu
 	private string[] tireNames = new string[4] {
